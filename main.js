@@ -1,15 +1,5 @@
-// let tiledata = [
-//     [0,0,1,1,1,0,0],
-//     [0,0,1,1,1,0,0],
-//     [1,1,1,1,1,1,1],
-//     [1,1,1,2,1,1,1],
-//     [1,1,1,1,1,1,1],
-//     [0,0,1,1,1,0,0],
-//     [0,0,1,1,1,0,0],
-// ];
-
 let tiledata = [
-    [0,0,3,3,3,0,0],
+    [-1,0,3,3,3,0,-2],
     [0,0,3,3,3,0,0],
     [4,4,2,2,2,5,5],
     [4,4,2,1,2,5,5],
@@ -26,12 +16,14 @@ let colors = [
     [200, 200, 0],
     [0, 150, 0],
     [36, 111, 191],
-]
+];
 
 let select = {
     x: 3,
     y: 3
-}
+};
+
+let isToggle = false;
 
 let isShiftKey = false;
 let oldIsUp = false;
@@ -81,6 +73,62 @@ function move(ax, ay, s) {
 }
 
 function cal() {
+    if(mouseIsPressed === true &&
+        mouseButton === LEFT) {
+        if(!isToggle) {
+            let x = select.x;
+            let y = select.y;
+
+            select.x =  floor(mouseX / 100);
+            select.y =  floor(mouseY / 100);
+
+            if(select.x === 0 &&
+                select.y === 0) {
+                isToggle = true;
+                select.x = x;
+                select.y = y;
+            }
+
+            if(select.x === 6 &&
+                select.y === 0) {
+                select.x = x;
+                select.y = y;
+            }
+        } else {
+            let x = floor(mouseX / 100);
+            let y = floor(mouseY / 100);
+
+            if(x === 6 &&
+                y === 0) {
+                isToggle = false;
+            }
+
+            if(x === select.x+1 &&
+                y === select.y) {
+                isToggle = !isToggle;
+                move(1, 0, false);
+            }
+
+            if(x === select.x-1 &&
+                y === select.y) {
+                isToggle = !isToggle;
+                move(-1, 0, false);
+            }
+
+            if(x === select.x &&
+                y === select.y+1) {
+                isToggle = !isToggle;
+                move(0, 1, false);
+            }
+
+            if(x === select.x-1 &&
+                y === select.y-1) {
+                isToggle = !isToggle;
+                move(0, -1, false);
+            }
+        }
+    }
+
     let isShiftKey = keyIsDown(SHIFT);
     let isUp = keyIsDown(UP_ARROW);
     let isDown = keyIsDown(DOWN_ARROW);
@@ -127,6 +175,16 @@ function draw() {
         tiles.forEach((tile, x) => {
             noStroke();
             switch (tile) {
+                case -1:
+                    if(isToggle) break;
+                    else fill(36, 111, 191);
+                    rect((x * 100), (y * 100), 100, 100)
+                    break;
+                case -2:
+                    if(!isToggle) break;
+                    else fill(36, 111, 191);
+                    rect((x * 100), (y * 100), 100, 100)
+                    break;
                 case 0: break;
                 default:
                     fill(...colors[tile])
