@@ -122,7 +122,7 @@ function cal() {
                 move(0, 1, true);
             }
 
-            if(x === select.x-1 &&
+            if(x === select.x &&
                 y === select.y-1) {
                 isToggle = false;
                 move(0, -1, true);
