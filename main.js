@@ -73,14 +73,15 @@ function move(ax, ay, s) {
 }
 
 function cal() {
-    if(mouseIsPressed === true &&
-        mouseButton === LEFT) {
+    console.log(touches);
+
+    if(touches.length !== 0) {
         if(!isToggle) {
             let x = select.x;
             let y = select.y;
 
-            select.x =  floor(mouseX / 100);
-            select.y =  floor(mouseY / 100);
+            select.x =  floor(touches[0].x / 100);
+            select.y =  floor(touches[0].y / 100);
 
             if(select.x === 0 &&
                 select.y === 0) {
@@ -95,8 +96,8 @@ function cal() {
                 select.y = y;
             }
         } else {
-            let x = floor(mouseX / 100);
-            let y = floor(mouseY / 100);
+            let x = floor(touches[0].x / 100);
+            let y = floor(touches[0].y / 100);
 
             if(x === 6 &&
                 y === 0) {
@@ -105,26 +106,26 @@ function cal() {
 
             if(x === select.x+1 &&
                 y === select.y) {
-                isToggle = !isToggle;
-                move(1, 0, false);
+                isToggle = false;
+                move(1, 0, true);
             }
 
             if(x === select.x-1 &&
                 y === select.y) {
-                isToggle = !isToggle;
-                move(-1, 0, false);
+                isToggle = false;
+                move(-1, 0, true);
             }
 
             if(x === select.x &&
                 y === select.y+1) {
-                isToggle = !isToggle;
-                move(0, 1, false);
+                isToggle = false;
+                move(0, 1, true);
             }
 
             if(x === select.x-1 &&
                 y === select.y-1) {
-                isToggle = !isToggle;
-                move(0, -1, false);
+                isToggle = false;
+                move(0, -1, true);
             }
         }
     }
